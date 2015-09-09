@@ -15,9 +15,14 @@
  */
 package com.google.android.exoplayer.demo.player;
 
+import android.content.Context;
+import android.media.MediaCodec;
+import android.net.Uri;
+
 import com.google.android.exoplayer.MediaCodecAudioTrackRenderer;
 import com.google.android.exoplayer.MediaCodecVideoTrackRenderer;
 import com.google.android.exoplayer.TrackRenderer;
+import com.google.android.exoplayer.demo.App;
 import com.google.android.exoplayer.demo.player.DemoPlayer.RendererBuilder;
 import com.google.android.exoplayer.extractor.Extractor;
 import com.google.android.exoplayer.extractor.ExtractorSampleSource;
@@ -27,10 +32,6 @@ import com.google.android.exoplayer.upstream.DataSource;
 import com.google.android.exoplayer.upstream.DefaultAllocator;
 import com.google.android.exoplayer.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer.upstream.DefaultUriDataSource;
-
-import android.content.Context;
-import android.media.MediaCodec;
-import android.net.Uri;
 
 /**
  * A {@link RendererBuilder} for streams that can be read using an {@link Extractor}.
@@ -47,7 +48,8 @@ public class ExtractorRendererBuilder implements RendererBuilder {
   public ExtractorRendererBuilder(Context context, String userAgent, Uri uri) {
     this.context = context;
     this.userAgent = userAgent;
-    this.uri = uri;
+    String proxyUrl = App.getProxy(context).getProxyUrl(uri.toString());
+    this.uri = Uri.parse(proxyUrl);
   }
 
   @Override
